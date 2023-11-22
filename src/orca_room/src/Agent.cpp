@@ -474,7 +474,7 @@ namespace RVO
               ? std::numeric_limits<float>::infinity()
               : absSq(velocity_ - (leftCutoff + tLeft * leftLegDirection));
       const float distSqRight =
-          tRight < 0.0Fgit 
+          tRight < 0.0F
               ? std::numeric_limits<float>::infinity()
               : absSq(velocity_ - (rightCutoff + tRight * rightLegDirection));
 
