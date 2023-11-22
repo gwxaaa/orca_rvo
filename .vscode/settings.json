@@ -73,6 +73,7 @@
         "cinttypes": "cpp",
         "variant": "cpp"
     },
+    "intellicodeApiExamples.loggingLevel": "ALL",
     // {
     //     "files.autoSave": "onWindowChange",
     //     "git.autoRepositoryDetection": true,

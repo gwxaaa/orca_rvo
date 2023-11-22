@@ -19,7 +19,6 @@ namespace RVO
     // 回调函数，处理模型状态信息
     void modelStatesCallback(const gazebo_msgs::ModelStates::ConstPtr &msg);
     std::vector<gazebo_msgs::ModelState> getothermodels() const;
-    //  bool hasReceivedInfo()const;
   private:
     ros::NodeHandle nh;
     ros::Subscriber model_states_sub_;
@@ -30,11 +29,8 @@ namespace RVO
     double new_velocity;
     geometry_msgs::Pose agentpose;
     geometry_msgs::Twist agenttwist;
-    geometry_msgs::Pose targetpose;
-    geometry_msgs::Twist targettwist;
     geometry_msgs::Pose goal_pose;
     std::vector<gazebo_msgs::ModelState> other_models_states;
-    //   bool receivedInfo_;
     std::string modelName_;
     double time_;
     double targetModelSpeed_;
@@ -45,6 +41,11 @@ namespace RVO
     double radius_; // 避障半径
     std::vector<Agent *> agentNeighbors_;
     std::vector<Agent *> obstacleNeighbors_;
+    gazebo_msgs::ModelState target_model_state;
+    Vector2 agentPosition;
+    Vector2 agentVelocity;
+    Vector2 goalPosition;
+    geometry_msgs::Pose new_pose;
 
   };
 } // namespace RVO

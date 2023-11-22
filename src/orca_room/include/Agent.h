@@ -28,28 +28,20 @@ namespace RVO
      */
     Agent() {}
     Agent(const Vector2 &position, const Vector2 &velocity) : position_(position), velocity_(velocity) {}
-    Agent(const geometry_msgs::Pose &agentpose, const geometry_msgs::Twist &agenttwist,double time, geometry_msgs::Pose goal_pose,
+    Agent(const Vector2& agentPosition, const Vector2& agentVelocity,const Vector2& goalPosition,double time,
           double maxSpeed_, double neighborDistance_, double timeHorizon_, const  std::vector<gazebo_msgs::ModelState> other_models_states,
-          double radius);
+          double radius_);
     ~Agent();
     void computeNeighbors(const Neighbor *neighbor);
-    gazebo_msgs::ModelState computeNewVelocity(const geometry_msgs::Pose &agentpose,
-                                               const geometry_msgs::Twist &agentTwist, 
-                                               const geometry_msgs::Pose &targetpose,
-                                               const geometry_msgs::Twist &targettwist,
-                                               const std::vector<RVO::Agent *> agentNeighbors_,
-                                               const  std::vector<RVO::Obstacle *> obstacleNeighbors_,
-                                               double time);
+    Vector2 computeNewVelocity(const Vector2& agentPosition, const Vector2& agentVelocity,
+                                  const Vector2& goalPosition,
+                                  const std::vector<RVO::Agent*>& agentNeighbors_,
+                                  const std::vector<RVO::Obstacle*>& obstacleNeighbors_,
+                                  double time);
 
     void update(float timeStep);
-    /* Not implemented. */
-    // Agent(const Agent &other);
-    // /* Not implemented. */
-    // Agent &operator=(const Agent &other);
     std::vector<RVO::Agent *> agentNeighbors_;
     std::vector<RVO::Obstacle *> obstacleNeighbors_;
-    // std::vector<std::pair<float, const Agent *> > agentNeighbors_;
-    // std::vector<std::pair<float, const Obstacle *> > obstacleNeighbors_;
     std::vector<Line> orcaLines_;
     Vector2 newVelocity_;
     Vector2 position_;

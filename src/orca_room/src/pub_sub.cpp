@@ -4,11 +4,10 @@
 #include "std_msgs/String.h"
 #include "ModelSubPub.h"
 #include "Neighbor.h"
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
     ros::init(argc, argv, "pub_sub");
     ros::NodeHandle nh("~");
-
     // 从参数服务器中获取相应的参数值
     std::string targetModelName;
     nh.getParam("target_model_name", targetModelName);
@@ -29,15 +28,16 @@ int main(int argc, char** argv)
     goal_pose.position.y = goal_pose_y;
     goal_pose.position.z = goal_pose_z;
 
-    //double time = 0.03; // 时间参数设定
-    // 创建 ModelSubPub 实例并传入参数
+    // double time = 0.03; // 时间参数设定
+    //  创建 ModelSubPub 实例并传入参数
     gazebo_msgs::ModelState target_model_state;
     target_model_state.twist.linear.x = twist_linear_x;
     target_model_state.twist.angular.z = twist_angular_z;
     RVO::ModelSubPub modelSubPub(targetModelName, time, target_model_state, goal_pose,
-        maxSpeed_, neighborDistance_, timeHorizon_, radius_);
-    ros::Rate rate(10);
-    while (ros::ok()) {
+                                 maxSpeed_, neighborDistance_, timeHorizon_, radius_);
+    ros::Rate rate(100);
+    while (ros::ok())
+    {
         ROS_INFO("Target model name: %s", targetModelName.c_str());
         ros::spinOnce();
         rate.sleep();
@@ -45,4 +45,3 @@ int main(int argc, char** argv)
 
     return 0;
 }
-

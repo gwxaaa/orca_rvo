@@ -38,7 +38,6 @@ class Obstacle {
   Obstacle *previous_;
   std::size_t id_;
   bool isConvex_;
-
   friend class Agent;
   friend class KdTree;
 };

@@ -14,19 +14,7 @@ namespace RVO
   class neighbor;
   namespace
   {
-    /**
-     * @relates        Agent
-     * @brief          Solves a one-dimensional linear program on a specified line
-     *                 subject to linear constraints defined by lines and a circular
-     *                 constraint.
-     * @param[in]      lines        Lines defining the linear constraints.
-     * @param[in]      lineNo       The specified line constraint.
-     * @param[in]      radius       The radius of the circular constraint.
-     * @param[in]      optVelocity  The optimization velocity.
-     * @param[in]      directionOpt True if the direction should be optimized.
-     * @param[in, out] result       A reference to the result of the linear program.
-     * @return         True if successful.
-     */
+
     bool linearProgram1(const std::vector<Line> &lines, std::size_t lineNo,
                         float radius, const Vector2 &optVelocity, bool directionOpt,
                         Vector2 &result)
@@ -34,13 +22,11 @@ namespace RVO
       const float dotProduct = lines[lineNo].point * lines[lineNo].direction;
       const float discriminant =
           dotProduct * dotProduct + radius * radius - absSq(lines[lineNo].point);
-
       if (discriminant < 0.0F)
       {
         /* Max speed circle fully invalidates line lineNo. */
         return false;
       }
-
       const float sqrtDiscriminant = std::sqrt(discriminant);
       float tLeft = -dotProduct - sqrtDiscriminant;
       float tRight = -dotProduct + sqrtDiscriminant;
@@ -50,7 +36,6 @@ namespace RVO
         const float denominator = det(lines[lineNo].direction, lines[i].direction);
         const float numerator =
             det(lines[i].direction, lines[lineNo].point - lines[i].point);
-
         if (std::fabs(denominator) <= RVO_EPSILON)
         {
           /* Lines lineNo and i are (almost) parallel. */
@@ -58,12 +43,10 @@ namespace RVO
           {
             return false;
           }
-
           continue;
         }
 
         const float t = numerator / denominator;
-
         if (denominator >= 0.0F)
         {
           /* Line i bounds line lineNo on the right. */
@@ -124,13 +107,12 @@ namespace RVO
     { /* NOLINT(runtime/references) */
       if (directionOpt)
       {
-
         result = optVelocity * radius;
       }
       else if (absSq(optVelocity) > radius * radius)
       {
+
         /* Optimize closest point and outside circle. */
-        result = normalize(optVelocity) * radius;
       }
       else
       {
@@ -224,8 +206,9 @@ namespace RVO
       }
     }
   } /* namespace */
-  Agent::Agent(const geometry_msgs::Pose &agentpose, const geometry_msgs::Twist &agenttwist,double time, geometry_msgs::Pose goal_pose, double maxSpeed_, double neighborDistance_,
-               double timeHorizon_, const std::vector<gazebo_msgs::ModelState> other_models_states, double radius)
+  Agent::Agent(const Vector2 &agentPosition, const Vector2 &agentVelocity, const Vector2 &goalPosition, double time,
+               double maxSpeed_, double neighborDistance_, double timeHorizon_, const std::vector<gazebo_msgs::ModelState> other_models_states,
+               double radius_)
       : time(time),
         maxSpeed_(maxSpeed_),
         neighborDist_(neighborDist_),
@@ -236,7 +219,6 @@ namespace RVO
   {
   }
   Agent::~Agent() {}
-
   void Agent::computeNeighbors(const Neighbor *neighbor)
   {
     obstacleNeighbors_.clear();
@@ -246,33 +228,19 @@ namespace RVO
     const std::vector<RVO::Obstacle *> &obstacleNeighbors_ = neighbor->getObstacleNeighbors();
   }
   // void Agent::computeNewVelocity(float timeStep)
-  gazebo_msgs::ModelState Agent::computeNewVelocity(const geometry_msgs::Pose &agentpose, const geometry_msgs::Twist &agenttwist,
-                                                    const geometry_msgs::Pose &targetpose, const geometry_msgs::Twist &targettwist,
-                                                    const std::vector<RVO::Agent *> agentNeighbors_,
-                                                    const std::vector<RVO::Obstacle *> obstacleNeighbors_,
-                                                    double time)
+  Vector2 Agent::computeNewVelocity(const Vector2 &agentPosition, const Vector2 &agentVelocity,
+                                    const Vector2 &goalPosition,
+                                    const std::vector<RVO::Agent *> &agentNeighbors_,
+                                    const std::vector<RVO::Obstacle *> &obstacleNeighbors_,
+                                    double time)
   {
-    // opt也就是机器人的实际运行速度--也就是每回接收回来的信息。
-    //模型的信息接受错误
-       ROS_INFO("1111111111Pose - x: %f, y: %f, z: %f", agentpose.position.x, agentpose.position.y, agentpose.position.z);
-    Vector2 position_(agentpose.position.x, agentpose.position.y);
-    double deltaTheta = agenttwist.angular.z * time;
-    // 根据新的朝向角度和线速度计算速度向量
-    double velocityX = agenttwist.linear.x * cos(deltaTheta);
-    double velocityY = agenttwist.linear.x * sin(deltaTheta);
-    Vector2 velocity_(velocityX, velocityY);
-    // 需要将模型的和目标点的分清楚
-    // 那么就需要将此时的坐标和终点的坐标进行计算，这样就会得到偏好速度。
-    ROS_INFO("Pose - x: %f, y: %f, z: %f", targetpose.position.x, targetpose.position.y, targetpose.position.z);
-    double velocityX1 = (targetpose.position.x - agentpose.position.x) * 0.1;
-    double velocityY1 = (targetpose.position.y - agentpose.position.y) * 0.1;
+    Vector2 position_(agentPosition);
+    Vector2 velocity_(agentVelocity);
+    double velocityX1 = (goalPosition.x() - agentPosition.x()) * 0.1;
+    double velocityY1 = (goalPosition.y() - agentPosition.y()) * 0.1;
     Vector2 prefVelocity_(velocityX1, velocityY1);
-    // double deltaTheta1 = targettwist.angular.z * time;
-    // // 根据新的朝向角度和线速度计算速度向量
-    // double velocityX1 = targettwist.linear.x * cos(deltaTheta1 );
-    // double velocityY1 = targettwist.linear.x* sin(deltaTheta1 );
     orcaLines_.clear();
-    const float invTimeHorizonObst = 1.0F / timeHorizonObst_;
+    const float invTimeHorizonObst = 1.0 / timeHorizonObst_;
 
     /* Create obstacle ORCA lines. */
     for (std::size_t i = 0U; i < obstacleNeighbors_.size(); ++i)
@@ -285,7 +253,6 @@ namespace RVO
       /* Check if velocity obstacle of obstacle is already taken care of by
        * previously constructed obstacle ORCA lines. */
       bool alreadyCovered = false;
-
       for (std::size_t j = 0U; j < orcaLines_.size(); ++j)
       {
         if (det(invTimeHorizonObst * relativePosition1 - orcaLines_[j].point,
@@ -301,12 +268,10 @@ namespace RVO
           break;
         }
       }
-
       if (alreadyCovered)
       {
         continue;
       }
-
       /* Not yet covered. Check for collisions. */
       const float distSq1 = absSq(relativePosition1);
       const float distSq2 = absSq(relativePosition2);
@@ -315,9 +280,7 @@ namespace RVO
       const float s =
           (-relativePosition1 * obstacleVector) / absSq(obstacleVector);
       const float distSqLine = absSq(-relativePosition1 - s * obstacleVector);
-
       Line line;
-
       if (s < 0.0F && distSq1 <= radiusSq)
       {
         /* Collision with left vertex. Ignore if non-convex. */
@@ -330,7 +293,6 @@ namespace RVO
         }
         continue;
       }
-
       if (s > 1.0F && distSq2 <= radiusSq)
       {
         /* Collision with right vertex. Ignore if non-convex or if it will be
@@ -343,7 +305,6 @@ namespace RVO
               normalize(Vector2(-relativePosition2.y(), relativePosition2.x()));
           orcaLines_.push_back(line);
         }
-
         continue;
       }
       if (s >= 0.0F && s <= 1.0F && distSqLine <= radiusSq)
@@ -369,7 +330,6 @@ namespace RVO
           /* Ignore obstacle. */
           continue;
         }
-
         obstacle2 = obstacle1;
 
         const float leg1 = std::sqrt(distSq1 - radiusSq);
@@ -393,7 +353,6 @@ namespace RVO
           /* Ignore obstacle. */
           continue;
         }
-
         obstacle1 = obstacle2;
 
         const float leg2 = std::sqrt(distSq2 - radiusSq);
@@ -531,7 +490,6 @@ namespace RVO
         orcaLines_.push_back(line);
         continue;
       }
-
       if (distSqLeft <= distSqRight)
       {
         /* Project on left leg. */
@@ -563,6 +521,7 @@ namespace RVO
 
     const std::size_t numObstLines = orcaLines_.size();
     const float invTimeHorizon = 1.0F / timeHorizon_;
+
     // 这里才是真正的运动障碍物（也就是运动的机器人当作障碍物）
     /* Create agent ORCA lines. */
     for (std::size_t i = 0U; i < agentNeighbors_.size(); ++i)
@@ -571,8 +530,12 @@ namespace RVO
       const Vector2 relativePosition = other->position_ - position_;
       const Vector2 relativeVelocity = velocity_ - other->velocity_;
       const float distSq = absSq(relativePosition);
+      /// aaaaaaa
       const float combinedRadius = radius_ + other->radius_;
+           std::cout << "222111111234555522222222222: " << radius_ << std::endl;
+       std::cout << "111111234555522222222222: " << combinedRadius << std::endl;
       const float combinedRadiusSq = combinedRadius * combinedRadius;
+      // std::cout << "2111111234555522222222222: " << combinedRadius << std::endl;
       Line line;
       Vector2 u;
       if (distSq > combinedRadiusSq)
@@ -581,6 +544,7 @@ namespace RVO
         const Vector2 w = relativeVelocity - invTimeHorizon * relativePosition;
         /* Vector from cutoff center to relative velocity. */
         const float wLengthSq = absSq(w);
+        //       std::cout << "1111111wLength: " << wLengthSq << std::endl;
         const float dotProduct = w * relativePosition;
         if (dotProduct < 0.0F &&
             dotProduct * dotProduct > combinedRadiusSq * wLengthSq)
@@ -590,6 +554,8 @@ namespace RVO
           const Vector2 unitW = w / wLength;
           line.direction = Vector2(unitW.y(), -unitW.x());
           u = (combinedRadius * invTimeHorizon - wLength) * unitW;
+          ////aaaaaaaaaaaa
+          // std::cout << "222222222222u: " << u << std::endl;
         }
         else
         {
@@ -625,37 +591,27 @@ namespace RVO
         const Vector2 w = relativeVelocity - invTimeStep * relativePosition;
         const float wLength = abs(w);
         const Vector2 unitW = w / wLength;
-
+        //            std::cout << "334555522222222222: " <<   unitW << std::endl;
+        // std::cout << "3333invTimeStepu: " << invTimeStep << std::endl;
         line.direction = Vector2(unitW.y(), -unitW.x());
         u = (combinedRadius * invTimeStep - wLength) * unitW;
       }
-
+      //   std::cout << "134555522222222222: " <<  line.direction<< std::endl;
+      //  std::cout << "234555522222222222: " <<  combinedRadius << std::endl;
+      // std::cout << "555555555222222222222u: " << u << std::endl;
       line.point = velocity_ + 0.5F * u;
       orcaLines_.push_back(line);
+      //    std::cout << "4444444444u: " <<  line.point << std::endl;
     }
     const std::size_t lineFail =
         linearProgram2(orcaLines_, maxSpeed_, prefVelocity_, false, newVelocity_);
     //
-    ROS_INFO("Velocity2: x=%.2f, y=%.2f", newVelocity_.x(), newVelocity_.y());
+    ROS_INFO("111111111Velocity2: x=%.2f, y=%.2f", newVelocity_.x(), newVelocity_.y());
     if (lineFail < orcaLines_.size())
     {
       linearProgram3(orcaLines_, numObstLines, lineFail, maxSpeed_, newVelocity_);
     }
-    gazebo_msgs::ModelState computedVelocity;
-    // 信息转换
-    computedVelocity.model_name = "target_model"; //
-    double X = newVelocity_.x();
-    double Y = newVelocity_.y();
-    // computedVelocity.twist.linear.x=sqrt(X*X+Y*Y);
-    //  double theta=atan2(Y,X);
-    //  computedVelocity.twist.angular.z= (theta-deltaTheta)/time;
-    computedVelocity.pose.position.x = agentpose.position.x + newVelocity_.x() * time;
-    computedVelocity.pose.position.y = agentpose.position.y + newVelocity_.y() * time;
-    ROS_INFO(" Twist: linear x=%.2f", X);
-    ROS_INFO("Model Twist: linear x=%.2f", computedVelocity.twist.linear.x);
-    ROS_INFO("final Model :  x=%.2f, y=%.2f", computedVelocity.pose.position.x, computedVelocity.pose.position.y);
-    // 返回计算得到的新速度
-    return computedVelocity;
+    return newVelocity_;
   }
 
   void Agent::update(float timeStep)

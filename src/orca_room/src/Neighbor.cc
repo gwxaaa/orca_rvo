@@ -28,6 +28,7 @@ namespace RVO {
                     Vector2 velocity_(velocityX, velocityY);
                     Agent* newAgent = new Agent(point, velocity_);
                     agentNeighbors_.push_back(newAgent);
+                    //智能体是可以的
                 } else if (isObstacle(model_state)) {
                     const geometry_msgs::Pose &pose = model_state.pose;
                     const geometry_msgs::Twist &twist = model_state.twist;
