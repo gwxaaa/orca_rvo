@@ -1,0 +1,8 @@
+
+
+<launch>
+<node name = "pub_sub" pkg = "orca" type = "pub_sub" output = "screen">
+<param name = "target_model" type = "str" value = "model2.1" / >
+< / node>
+
+< / launch>

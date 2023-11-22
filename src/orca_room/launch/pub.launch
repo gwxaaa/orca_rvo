@@ -1,0 +1,31 @@
+<launch>
+
+   <node name = "pub_sub" pkg = "orca_room" type = "pub_sub" output = "screen">
+    <param name="target_model_name" type="string" value="model4.1" />
+    <param name="target_model/twist_linear_x" type="double" value="1.0" />
+    <param name="target_model/twist_angular_z" type="double" value="1.0" />
+    <param name="max_speed" type="double" value="3.0" />
+    <param name="neighbor_distance" type="double" value="2.0" />
+    <param name="time_horizon" type="double" value="2.0" />
+    <param name="radius_" type="double" value="1.5" />
+    <param name="goal_pose_x" type="double" value="-10.0" />
+    <param name="goal_pose_y" type="double" value="-10.0" />
+    <param name="goal_pose_z" type="double" value="0.5" />
+    <param name="time" type="double" value="0.1" />
+
+  </node>
+  <node name = "pub_sub2" pkg = "orca_room" type = "pub_sub" output = "screen">
+    <param name="target_model_name" type="string" value="model4.2" />
+    <param name="target_model/twist_linear_x" type="double" value="1.0" />
+    <param name="target_model/twist_angular_z" type="double" value="1.0" />
+    <param name="max_speed" type="double" value="3.0" />
+    <param name="neighbor_distance" type="double" value="4.0" />
+    <param name="time_horizon" type="double" value="2.0" />
+    <param name="radius_" type="double" value="1.5" />
+    <param name="goal_pose_x" type="double" value="-10.0" />
+    <param name="goal_pose_y" type="double" value="10.0" />
+    <param name="goal_pose_z" type="double" value="0.5" />
+    <param name="time" type="double" value="0.1" />
+
+  </node>
+</launch>

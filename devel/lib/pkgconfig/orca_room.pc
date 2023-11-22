@@ -1,0 +1,8 @@
+prefix=/home/gao/orca_ws_room/devel
+
+Name: orca_room
+Description: Description of orca_room
+Version: 0.0.0
+Cflags: -I/home/gao/orca_ws_room/devel/include -I/home/gao/orca_ws_room/src/orca_room/include
+Libs: -L${prefix}/lib -lorca_room
+Requires: gazebo_plugins gazebo_ros geometry_msgs roscpp rospy std_msgs
