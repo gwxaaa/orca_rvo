@@ -6,12 +6,6 @@
 #include "Vector2.h"
 #include "Neighbor.h"
 
-#include <algorithm>
-#include <utility>
-#include "Agent.h"
-#include "Obstacle.h"
-#include "Vector2.h"
-#include "Neighbor.h"
 namespace RVO {
     Neighbor::Neighbor(const ModelSubPub & modelSubPub) : modelSubPub_(modelSubPub) {
         std::vector<gazebo_msgs::ModelState> other_models_states = modelSubPub_.getothermodels();

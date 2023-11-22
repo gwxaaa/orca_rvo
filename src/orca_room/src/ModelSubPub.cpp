@@ -9,7 +9,6 @@
 #include <cmath>
 namespace RVO
 {
-
   ModelSubPub::ModelSubPub(const std::string &modelName, double time, gazebo_msgs::ModelState target_model_state,
                            geometry_msgs::Pose goal_pose, double maxSpeed_, double neighborDistance_, double timeHorizon_, double radius_)
       : modelName_(modelName),

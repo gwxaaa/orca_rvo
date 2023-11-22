@@ -13,7 +13,6 @@ namespace RVO
   class neighbor;
   namespace
   {
-
     bool linearProgram1(const std::vector<Line> &lines, std::size_t lineNo,
                         float radius, const Vector2 &optVelocity, bool directionOpt,
                         Vector2 &result)
@@ -44,7 +43,6 @@ namespace RVO
           }
           continue;
         }
-
         const float t = numerator / denominator;
         if (denominator >= 0.0F)
         {
@@ -62,7 +60,6 @@ namespace RVO
           return false;
         }
       }
-
       if (directionOpt)
       {
         /* Optimize direction. */
@@ -82,7 +79,6 @@ namespace RVO
         /* Optimize closest point. */
         const float t =
             lines[lineNo].direction * (optVelocity - lines[lineNo].point);
-
         if (t < tLeft)
         {
           result = lines[lineNo].point + tLeft * lines[lineNo].direction;
@@ -96,7 +92,6 @@ namespace RVO
           result = lines[lineNo].point + t * lines[lineNo].direction;
         }
       }
-
       return true;
     }
 
@@ -110,7 +105,6 @@ namespace RVO
       }
       else if (absSq(optVelocity) > radius * radius)
       {
-
         /* Optimize closest point and outside circle. */
       }
       else
@@ -135,17 +129,6 @@ namespace RVO
       }
       return lines.size();
     }
-
-    /**
-     * @relates        Agent
-     * @brief          Solves a two-dimensional linear program subject to linear
-     *                 constraints defined by lines and a circular constraint.
-     * @param[in]      lines        Lines defining the linear constraints.
-     * @param[in]      numObstLines Count of obstacle lines.
-     * @param[in]      beginLine    The line on which the 2-d linear program failed.
-     * @param[in]      radius       The radius of the circular constraint.
-     * @param[in, out] result       A reference to the result of the linear program.
-     */
     void linearProgram3(const std::vector<Line> &lines, std::size_t numObstLines,
                         std::size_t beginLine, float radius,
                         Vector2 &result)
@@ -160,7 +143,6 @@ namespace RVO
           std::vector<Line> projLines(
               lines.begin(),
               lines.begin() + static_cast<std::ptrdiff_t>(numObstLines));
-
           for (std::size_t j = numObstLines; j < i; ++j)
           {
             Line line;
@@ -186,7 +168,6 @@ namespace RVO
                                              determinant) *
                                                 lines[i].direction;
             }
-
             line.direction = normalize(lines[j].direction - lines[i].direction);
             projLines.push_back(line);
           }
@@ -214,7 +195,6 @@ namespace RVO
         radius_(radius_),
         timeHorizon_(timeHorizon_),
         timeHorizonObst_(timeHorizonObst_)
-
   {
   }
   Agent::~Agent() {}
@@ -314,12 +294,10 @@ namespace RVO
         orcaLines_.push_back(line);
         continue;
       }
-
       /* No collision. Compute legs. When obliquely viewed, both legs can come
        * from a single vertex. Legs extend cut-off line when nonconvex vertex. */
       Vector2 leftLegDirection;
       Vector2 rightLegDirection;
-
       if (s < 0.0F && distSqLine <= radiusSq)
       {
         /* Obstacle viewed obliquely so that left vertex defines velocity
@@ -330,7 +308,6 @@ namespace RVO
           continue;
         }
         obstacle2 = obstacle1;
-
         const float leg1 = std::sqrt(distSq1 - radiusSq);
         leftLegDirection =
             Vector2(
@@ -399,12 +376,10 @@ namespace RVO
           rightLegDirection = obstacle1->direction_;
         }
       }
-
       /* Legs can never point into neighboring edge when convex vertex, take
        * cutoff-line of neighboring edge instead. If velocity projected on
        * "foreign" leg, no constraint is added. */
       const Obstacle *const leftNeighbor = obstacle1->previous_;
-
       bool isLeftLegForeign = false;
       bool isRightLegForeign = false;
 
@@ -415,7 +390,6 @@ namespace RVO
         leftLegDirection = -leftNeighbor->direction_;
         isLeftLegForeign = true;
       }
-
       if (obstacle2->isConvex_ &&
           det(rightLegDirection, obstacle2->direction_) <= 0.0F)
       {
@@ -423,16 +397,13 @@ namespace RVO
         rightLegDirection = obstacle2->direction_;
         isRightLegForeign = true;
       }
-
       /* Compute cut-off centers. */
       const Vector2 leftCutoff =
           invTimeHorizonObst * (obstacle1->point_ - position_);
       const Vector2 rightCutoff =
           invTimeHorizonObst * (obstacle2->point_ - position_);
       const Vector2 cutoffVector = rightCutoff - leftCutoff;
-
       /* Project current velocity on velocity obstacle. */
-
       /* Check if current velocity is projected on cutoff circles. */
       const float t =
           obstacle1 == obstacle2
@@ -516,7 +487,6 @@ namespace RVO
     }
     const std::size_t numObstLines = orcaLines_.size();
     const float invTimeHorizon = 1.0F / timeHorizon_;
-    // 这里才是真正的运动障碍物（也就是运动的机器人当作障碍物）
     /* Create agent ORCA lines. */
     for (std::size_t i = 0U; i < agentNeighbors_.size(); ++i)
     {
@@ -534,7 +504,7 @@ namespace RVO
         const Vector2 w = relativeVelocity - invTimeHorizon * relativePosition;
         /* Vector from cutoff center to relative velocity. */
         const float wLengthSq = absSq(w);
-        //       std::cout << "1111111wLength: " << wLengthSq << std::endl;
+        std::cout << "1111111wLength: " << wLengthSq << std::endl;
         const float dotProduct = w * relativePosition;
         if (dotProduct < 0.0F &&
             dotProduct * dotProduct > combinedRadiusSq * wLengthSq)

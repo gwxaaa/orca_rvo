@@ -47,14 +47,12 @@ bool Vector2::operator==(const Vector2 &vector) const {
 bool Vector2::operator!=(const Vector2 &vector) const {
   return x_ != vector.x_ || y_ != vector.y_;
 }
-
 Vector2 &Vector2::operator*=(float scalar) {
   x_ *= scalar;
   y_ *= scalar;
 
   return *this;
 }
-
 Vector2 &Vector2::operator/=(float scalar) {
   const float invScalar = 1.0F / scalar;
   x_ *= invScalar;
@@ -62,31 +60,26 @@ Vector2 &Vector2::operator/=(float scalar) {
 
   return *this;
 }
-
 Vector2 &Vector2::operator+=(const Vector2 &vector) {
   x_ += vector.x_;
   y_ += vector.y_;
 
   return *this;
 }
-
 Vector2 &Vector2::operator-=(const Vector2 &vector) {
   x_ -= vector.x_;
   y_ -= vector.y_;
 
   return *this;
 }
-
 Vector2 operator*(float scalar, const Vector2 &vector) {
   return Vector2(scalar * vector.x(), scalar * vector.y());
 }
-
 std::ostream &operator<<(std::ostream &stream, const Vector2 &vector) {
   stream << "(" << vector.x() << "," << vector.y() << ")";
 
   return stream;
 }
-
 float abs(const Vector2 &vector) { return std::sqrt(vector * vector); }
 
 float absSq(const Vector2 &vector) { return vector * vector; }
@@ -99,6 +92,5 @@ float leftOf(const Vector2 &vector1, const Vector2 &vector2,
              const Vector2 &vector3) {
   return det(vector1 - vector3, vector2 - vector1);
 }
-
 Vector2 normalize(const Vector2 &vector) { return vector / abs(vector); }
 } /* namespace RVO */
