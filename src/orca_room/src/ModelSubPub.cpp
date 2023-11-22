@@ -34,7 +34,6 @@ namespace RVO
     // 遍历所有模型
     for (size_t i = 0; i < msg->name.size(); ++i)
     {
-      // 找到特定目标模型
       if (msg->name[i] == target_model_)
       {
         // 存储特定目标模型的信
