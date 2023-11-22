@@ -1,6 +1,5 @@
 #ifndef MODEL_SUB_PUB_H
 #define MODEL_SUB_PUB_H
-
 #include "ros/ros.h"
 #include "gazebo_msgs/ModelStates.h"
 #include "gazebo_msgs/SetModelState.h"

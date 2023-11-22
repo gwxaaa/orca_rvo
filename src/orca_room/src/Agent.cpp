@@ -1,5 +1,4 @@
 
-
 #include "Agent.h"
 #include <algorithm>
 #include <cmath>
@@ -475,7 +474,7 @@ namespace RVO
               ? std::numeric_limits<float>::infinity()
               : absSq(velocity_ - (leftCutoff + tLeft * leftLegDirection));
       const float distSqRight =
-          tRight < 0.0F
+          tRight < 0.0Fgit 
               ? std::numeric_limits<float>::infinity()
               : absSq(velocity_ - (rightCutoff + tRight * rightLegDirection));
 

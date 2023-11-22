@@ -90,20 +90,6 @@ gazebo_msgs/ModelState.h
 ModelSubPub.h
 /home/gao/orca_ws_room/src/orca_room/src/ModelSubPub.h
 
-/home/gao/orca_ws_room/src/orca_room/src/pub_sub.cpp
-ros/ros.h
-/home/gao/orca_ws_room/src/orca_room/src/ros/ros.h
-gazebo_msgs/ModelStates.h
-/home/gao/orca_ws_room/src/orca_room/src/gazebo_msgs/ModelStates.h
-gazebo_msgs/ModelState.h
-/home/gao/orca_ws_room/src/orca_room/src/gazebo_msgs/ModelState.h
-std_msgs/String.h
-/home/gao/orca_ws_room/src/orca_room/src/std_msgs/String.h
-ModelSubPub.h
-/home/gao/orca_ws_room/src/orca_room/src/ModelSubPub.h
-Neighbor.h
-/home/gao/orca_ws_room/src/orca_room/src/Neighbor.h
-
 /opt/ros/noetic/include/gazebo_msgs/ModelState.h
 string
 -
