@@ -1,2 +1,2 @@
 orca_room
--DCATKIN_DEVEL_PREFIX=/home/gao/orca_ws_room/devel -DCMAKE_INSTALL_PREFIX=/home/gao/orca_ws_room/install -G Unix Makefiles
+-DCMAKE_BUILD_TYPE=RelWithDebInfo -DCATKIN_DEVEL_PREFIX=/home/gao/orca_ws_room/devel -DCMAKE_INSTALL_PREFIX=/home/gao/orca_ws_room/install -G Unix Makefiles
