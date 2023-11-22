@@ -27,8 +27,6 @@ int main(int argc, char **argv)
     goal_pose.position.x = goal_pose_x;
     goal_pose.position.y = goal_pose_y;
     goal_pose.position.z = goal_pose_z;
-
-    // double time = 0.03; // 时间参数设定
     //  创建 ModelSubPub 实例并传入参数
     gazebo_msgs::ModelState target_model_state;
     target_model_state.twist.linear.x = twist_linear_x;

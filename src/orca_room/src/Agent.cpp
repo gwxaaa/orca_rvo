@@ -464,7 +464,6 @@ namespace RVO
         orcaLines_.push_back(line);
         continue;
       }
-
       /* Project on left leg, right leg, or cut-off line, whichever is closest to
        * velocity. */
       const float distSqCutoff =
@@ -497,7 +496,6 @@ namespace RVO
         {
           continue;
         }
-
         line.direction = leftLegDirection;
         line.point =
             leftCutoff + radius_ * invTimeHorizonObst *
@@ -511,17 +509,14 @@ namespace RVO
       {
         continue;
       }
-
       line.direction = -rightLegDirection;
       line.point =
           rightCutoff + radius_ * invTimeHorizonObst *
                             Vector2(-line.direction.y(), line.direction.x());
       orcaLines_.push_back(line);
     }
-
     const std::size_t numObstLines = orcaLines_.size();
     const float invTimeHorizon = 1.0F / timeHorizon_;
-
     // 这里才是真正的运动障碍物（也就是运动的机器人当作障碍物）
     /* Create agent ORCA lines. */
     for (std::size_t i = 0U; i < agentNeighbors_.size(); ++i)
@@ -530,12 +525,8 @@ namespace RVO
       const Vector2 relativePosition = other->position_ - position_;
       const Vector2 relativeVelocity = velocity_ - other->velocity_;
       const float distSq = absSq(relativePosition);
-      /// aaaaaaa
       const float combinedRadius = radius_ + other->radius_;
-           std::cout << "222111111234555522222222222: " << radius_ << std::endl;
-       std::cout << "111111234555522222222222: " << combinedRadius << std::endl;
       const float combinedRadiusSq = combinedRadius * combinedRadius;
-      // std::cout << "2111111234555522222222222: " << combinedRadius << std::endl;
       Line line;
       Vector2 u;
       if (distSq > combinedRadiusSq)
@@ -554,8 +545,6 @@ namespace RVO
           const Vector2 unitW = w / wLength;
           line.direction = Vector2(unitW.y(), -unitW.x());
           u = (combinedRadius * invTimeHorizon - wLength) * unitW;
-          ////aaaaaaaaaaaa
-          // std::cout << "222222222222u: " << u << std::endl;
         }
         else
         {
@@ -591,21 +580,14 @@ namespace RVO
         const Vector2 w = relativeVelocity - invTimeStep * relativePosition;
         const float wLength = abs(w);
         const Vector2 unitW = w / wLength;
-        //            std::cout << "334555522222222222: " <<   unitW << std::endl;
-        // std::cout << "3333invTimeStepu: " << invTimeStep << std::endl;
         line.direction = Vector2(unitW.y(), -unitW.x());
         u = (combinedRadius * invTimeStep - wLength) * unitW;
       }
-      //   std::cout << "134555522222222222: " <<  line.direction<< std::endl;
-      //  std::cout << "234555522222222222: " <<  combinedRadius << std::endl;
-      // std::cout << "555555555222222222222u: " << u << std::endl;
       line.point = velocity_ + 0.5F * u;
       orcaLines_.push_back(line);
-      //    std::cout << "4444444444u: " <<  line.point << std::endl;
     }
     const std::size_t lineFail =
         linearProgram2(orcaLines_, maxSpeed_, prefVelocity_, false, newVelocity_);
-    //
     ROS_INFO("111111111Velocity2: x=%.2f, y=%.2f", newVelocity_.x(), newVelocity_.y());
     if (lineFail < orcaLines_.size())
     {
