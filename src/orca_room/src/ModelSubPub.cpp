@@ -62,13 +62,17 @@ namespace RVO
     double velocityY = agenttwist.linear.x * sin(deltaTheta);
     Vector2 agentVelocity(velocityX, velocityY);
     Vector2 goalPosition(goal_pose.position.x,goal_pose.position.y);
+    //计算邻居信息
     RVO::Neighbor neighborobject(*this);
-    // // 获取计算后的邻居信息
+    //  获取计算后的邻居信息
     std::vector<RVO::Agent *> agentNeighbors_ = neighborobject.getAgentNeighbors();
     std::vector<RVO::Obstacle *> obstacleNeighbors_ = neighborobject.getObstacleNeighbors();
-    RVO::Agent agent(agentPosition, agentVelocity, goalPosition, time, maxSpeed_, neighborDistance_, timeHorizon_, other_models_states, radius_);
-    Vector2 newVelocity = agent.computeNewVelocity(agentPosition, agentVelocity, goalPosition, agentNeighbors_, obstacleNeighbors_, time);
-
+    //对目标信息进行ORCA算法计算
+    RVO::Agent agent(agentPosition, agentVelocity, goalPosition, time, maxSpeed_, 
+                    neighborDistance_, timeHorizon_, other_models_states, radius_);
+    Vector2 newVelocity = agent.computeNewVelocity(agentPosition, agentVelocity, 
+                                                   goalPosition, agentNeighbors_, obstacleNeighbors_, time);
+    //只输出计算后的速度，相关位置移动信息在下面计算
     if (std::isnan(newVelocity.x()) || std::isnan(newVelocity.y()))
     {
       new_pose.position.x= agentPosition.x();

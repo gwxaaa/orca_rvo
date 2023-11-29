@@ -25,6 +25,7 @@ namespace RVO
         const ModelSubPub &modelSubPub_;
         // 代理和障碍物的向量
         double time;
+        double radius_;
         std::vector<Agent *> agentNeighbors_;
         std::vector<Obstacle *> obstacleNeighbors_;
         std::vector<gazebo_msgs::ModelState> other_models_states;
