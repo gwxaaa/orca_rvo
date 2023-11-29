@@ -12,7 +12,6 @@
     <param name="goal_pose_y" type="double" value="-4.8" />
     <param name="goal_pose_z" type="double" value="0.5" />
     <param name="time" type="double" value="0.2" />
-
   </node>
   <node name = "pub_sub2" pkg = "orca_room" type = "pub_sub" output = "screen">
     <param name="target_model_name" type="string" value="model2.2" />
@@ -26,9 +25,8 @@
     <param name="goal_pose_y" type="double" value="1.7" />
     <param name="goal_pose_z" type="double" value="0.5" />
     <param name="time" type="double" value="0.1" />
-
   </node>
-    <node name = "pub_sub3" pkg = "orca_room" type = "pub_sub" output = "screen">
+    <!-- <node name = "pub_sub3" pkg = "orca_room" type = "pub_sub" output = "screen">
     <param name="target_model_name" type="string" value="model2.3" />
     <param name="target_model/twist_linear_x" type="double" value="1.0" />
     <param name="target_model/twist_angular_z" type="double" value="1.0" />
@@ -139,5 +137,5 @@
     <param name="goal_pose_z" type="double" value="0.5" />
     <param name="time" type="double" value="0.2" />
 
-  </node>
+  </node> -->
 </launch>

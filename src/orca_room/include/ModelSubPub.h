@@ -7,6 +7,8 @@
 #include "Agent.h"
 #include "Obstacle.h"
 #include "Neighbor.h"
+#include <geometry_msgs/PoseStamped.h>
+#include "nav_msgs/Path.h"
 namespace RVO
 {
 
@@ -19,6 +21,7 @@ namespace RVO
     void modelStatesCallback(const gazebo_msgs::ModelStates::ConstPtr &msg);
     std::vector<gazebo_msgs::ModelState> getothermodels() const;
     double radius_;
+
   private:
     ros::NodeHandle nh;
     ros::Subscriber model_states_sub_;
@@ -38,7 +41,7 @@ namespace RVO
     double maxSpeed_;
     double neighborDistance_;
     double timeHorizon_;
- // 避障半径
+    // 避障半径
     std::vector<Agent *> agentNeighbors_;
     std::vector<Agent *> obstacleNeighbors_;
     gazebo_msgs::ModelState target_model_state;
@@ -46,7 +49,9 @@ namespace RVO
     Vector2 agentVelocity;
     Vector2 goalPosition;
     geometry_msgs::Pose new_pose;
-
+    ros::Publisher pose_stamped_pub_;
+    ros::Publisher path_pub_;
+    std::vector<geometry_msgs::Pose> new_poses;
   };
 } // namespace RVO
 #endif // MODEL_SUB_PUB_H
