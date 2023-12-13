@@ -227,7 +227,7 @@ namespace RVO
       const Obstacle *obstacle2 = obstacle1->next_;
       const Vector2 relativePosition1 = obstacle1->point_ - position_;
       const Vector2 relativePosition2 = obstacle2->point_ - position_;
-
+//区分障碍物这里没有设置。
       /* Check if velocity obstacle of obstacle is already taken care of by
        * previously constructed obstacle ORCA lines. */
       bool alreadyCovered = false;

@@ -1724,6 +1724,33 @@ src/Agent.cpp.s:
 	cd /home/gao/orca_ws_room/build && $(MAKE) -f orca_room/CMakeFiles/pub_sub.dir/build.make orca_room/CMakeFiles/pub_sub.dir/src/Agent.cpp.s
 .PHONY : src/Agent.cpp.s
 
+src/KinematicModel.o: src/KinematicModel.cpp.o
+
+.PHONY : src/KinematicModel.o
+
+# target to build an object file
+src/KinematicModel.cpp.o:
+	cd /home/gao/orca_ws_room/build && $(MAKE) -f orca_room/CMakeFiles/pub_sub.dir/build.make orca_room/CMakeFiles/pub_sub.dir/src/KinematicModel.cpp.o
+.PHONY : src/KinematicModel.cpp.o
+
+src/KinematicModel.i: src/KinematicModel.cpp.i
+
+.PHONY : src/KinematicModel.i
+
+# target to preprocess a source file
+src/KinematicModel.cpp.i:
+	cd /home/gao/orca_ws_room/build && $(MAKE) -f orca_room/CMakeFiles/pub_sub.dir/build.make orca_room/CMakeFiles/pub_sub.dir/src/KinematicModel.cpp.i
+.PHONY : src/KinematicModel.cpp.i
+
+src/KinematicModel.s: src/KinematicModel.cpp.s
+
+.PHONY : src/KinematicModel.s
+
+# target to generate assembly for a file
+src/KinematicModel.cpp.s:
+	cd /home/gao/orca_ws_room/build && $(MAKE) -f orca_room/CMakeFiles/pub_sub.dir/build.make orca_room/CMakeFiles/pub_sub.dir/src/KinematicModel.cpp.s
+.PHONY : src/KinematicModel.cpp.s
+
 src/Line.o: src/Line.cc.o
 
 .PHONY : src/Line.o
@@ -2004,6 +2031,9 @@ help:
 	@echo "... src/Agent.o"
 	@echo "... src/Agent.i"
 	@echo "... src/Agent.s"
+	@echo "... src/KinematicModel.o"
+	@echo "... src/KinematicModel.i"
+	@echo "... src/KinematicModel.s"
 	@echo "... src/Line.o"
 	@echo "... src/Line.i"
 	@echo "... src/Line.s"

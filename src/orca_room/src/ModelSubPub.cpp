@@ -9,6 +9,7 @@
 #include <cmath>
 #include <geometry_msgs/PoseStamped.h>
 #include "nav_msgs/Path.h"
+#include <KinematicModel.h>
 namespace RVO
 {
   ModelSubPub::ModelSubPub(const std::string &modelName, double time, gazebo_msgs::ModelState target_model_state,
@@ -20,7 +21,9 @@ namespace RVO
         timeHorizon_(timeHorizon_),
         radius_(radius_),
         goal_pose(goal_pose),
-        target_model_state(target_model_state)
+        target_model_state(target_model_state),
+        lastStoredNewVelocity(agentVelocity),
+        newVelocities(1, Vector2(0, 0))
   {
     // 初始化ROS节点
     ros::NodeHandle nh;
@@ -76,7 +79,6 @@ namespace RVO
                      neighborDistance_, timeHorizon_, other_models_states, radius_);
     Vector2 newVelocity = agent.computeNewVelocity(agentPosition, agentVelocity,
                                                    goalPosition, agentNeighbors_, obstacleNeighbors_, time);
-    // 只输出计算后的速度，相关位置移动信息在下面计算
     if (std::isnan(newVelocity.x()) || std::isnan(newVelocity.y()))
     {
       new_pose.position.x = agentPosition.x();
@@ -85,18 +87,39 @@ namespace RVO
     }
     else
     {
-      new_pose.position.x = agentPosition.x() + newVelocity.x() * time;
-      new_pose.position.y = agentPosition.y() + newVelocity.y() * time;
+      if (newVelocity != lastStoredNewVelocity)
+      {
+        newVelocities.push_back(newVelocity); // 将上一次存储的速度放入容器
+        lastStoredNewVelocity = newVelocity;  // 初始信息设置为0，也就是初始的位置不论朝向怎么样，都根据相关的速度计算得到角速度。
+        // 速度改变，将旧的值给last
+        lastvelocity = newVelocities[newVelocities.size() - 2];
+        // 更新存储的新速度为当前计算得到的新速度
+      }
+      double initialtheta2 = atan2(lastvelocity.y(), lastvelocity.x());
+      double X = newVelocity.x();
+      double Y = newVelocity.y();
+      new_twist.linear.x = sqrt(X * X + Y * Y);
+      double theta = atan2(Y, X);
+      new_twist.angular.x = 0;
+      new_twist.angular.y = 0;
+      double angle_diff = theta - initialtheta2;
+      std::cout << "gle_diff.z :" << angle_diff << std::endl;
+      // 这里要保证角速度的大小方向，
+      angle_diff = std::remainder(angle_diff, 2.0 * M_PI);
+      std::cout << "angle_diff.z :" << angle_diff << std::endl;
+      new_twist.angular.z = angle_diff / time;
+      std::cout << "new_twist.angular.z :" << new_twist.angular.z << std::endl;
+      // new_pose.position.x = agentPosition.x() + newVelocity.x() * time;
+      // new_pose.position.y = agentPosition.y() + newVelocity.y() * time;
+      KinematicModel kinematic_model(agentpose, new_twist);
+      new_pose = kinematic_model.calculateNewPosition(time);
     }
     gazebo_msgs::ModelState model_state;
     model_state.model_name = agentname;
     model_state.pose = new_pose;
     model_states_pub_.publish(model_state);
-
     new_poses.push_back(new_pose);
-    std::size_t size=new_poses.size();
-    std::cout<<"a111size:"<<size<<std::endl;
-
+    std::size_t size = new_poses.size();
     // 发布pose信息
     geometry_msgs::PoseStamped pose_stamped_msg;
     pose_stamped_msg.header.stamp = ros::Time::now(); // 使用当前时间作为时间戳
@@ -106,7 +129,6 @@ namespace RVO
     pose_stamped_msg.pose.orientation = new_pose.orientation;
     // 发布 geometry_msgs::PoseStamped 类型的消息
     pose_stamped_pub_.publish(pose_stamped_msg);
-
     // 发布path信息
     nav_msgs::Path path_msg;
     path_msg.header.stamp = ros::Time::now();
@@ -119,17 +141,6 @@ namespace RVO
       pose.header.stamp = ros::Time::now();
       pose.header.frame_id = "map"; // 设置路径点的坐标系
       pose.pose = new_poses[i];
-      // pose.pose.position.x = 0.1 * i;
-      // pose.pose.position.y = 0.1 * i;
-      // pose.pose.position.z = 0.5;
-      // pose.pose.orientation.x = 0;
-      // pose.pose.orientation.y = 0;
-      // pose.pose.orientation.z = 0;
-      // pose.pose.orientation.w = 1;
-      // 信息传输成功，但是值不是有效值；那么应该怎么设置
-      //std::cout << "11111Moved to new position: x=" << new_poses[i].position.x << ", y=" << new_poses[i].position.y << std::endl;
-     // pose.pose.id=modelName_;
-     
       path_msg.poses.push_back(pose); // 将路径点添加到路径消息中
     }
     path_pub_.publish(path_msg); // 发布路径消息

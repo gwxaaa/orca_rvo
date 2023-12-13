@@ -21,6 +21,7 @@ namespace RVO
     void modelStatesCallback(const gazebo_msgs::ModelStates::ConstPtr &msg);
     std::vector<gazebo_msgs::ModelState> getothermodels() const;
     double radius_;
+
   private:
     ros::NodeHandle nh;
     ros::Subscriber model_states_sub_;
@@ -48,9 +49,13 @@ namespace RVO
     Vector2 agentVelocity;
     Vector2 goalPosition;
     geometry_msgs::Pose new_pose;
+    geometry_msgs::Twist new_twist;
     ros::Publisher pose_stamped_pub_;
     ros::Publisher path_pub_;
     std::vector<geometry_msgs::Pose> new_poses;
+    Vector2 lastvelocity;
+    Vector2 lastStoredNewVelocity;
+    std::vector<Vector2> newVelocities;
   };
 } // namespace RVO
 #endif // MODEL_SUB_PUB_H
