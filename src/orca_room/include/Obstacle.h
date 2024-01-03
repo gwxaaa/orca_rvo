@@ -10,37 +10,42 @@
 
 #include "Vector2.h"
 
-namespace RVO {
-/**
- * @brief Defines static obstacles in the simulation.
- */
-class Obstacle {
- public:
+namespace RVO
+{
   /**
-   * @brief Constructs a static obstacle instance.
+   * @brief Defines static obstacles in the simulation.
    */
-  Obstacle();
-   Obstacle(const Vector2& point, const Vector2& velocity){}
-  /**
-   * @brief Destroys this static obstacle instance.
-   */
-  ~Obstacle();
+  class Obstacle
+  {
+  public:
+    /**
+     * @brief Constructs a static obstacle instance.
+     */
+    // Obstacle();
+    // Obstacle(const Vector2 &point, const Vector2 &velocity) {}
+    // 示例 Obstacle 类的构造函数
+    Obstacle(const Vector2 &point,  Obstacle *next, bool isConvex) ;
 
-  /* Not implemented. */
-  Obstacle(const Obstacle &other);
+    /**
+     * @brief Destroys this static obstacle instance.
+     */
+    ~Obstacle();
 
-  /* Not implemented. */
-  Obstacle &operator=(const Obstacle &other);
+    /* Not implemented. */
+    //Obstacle(const Obstacle &other);
 
-  Vector2 direction_;
-  Vector2 point_;
-  Obstacle *next_;
-  Obstacle *previous_;
-  std::size_t id_;
-  bool isConvex_;
-  friend class Agent;
-  friend class KdTree;
-};
+    /* Not implemented. */
+    Obstacle &operator=(const Obstacle &other);
+
+    Vector2 direction_;
+    Vector2 point_;
+    Obstacle *next_;
+    Obstacle *previous_;
+    std::size_t id_;
+    bool isConvex_;
+    friend class Agent;
+    friend class KdTree;
+  };
 } /* namespace RVO */
 
 #endif /* RVO_OBSTACLE_H_ */

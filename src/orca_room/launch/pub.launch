@@ -1,35 +1,8 @@
-
 <launch>
-    <arg name="node_name" />
-    <arg name="target_model_name"  />
-    <arg name="goal_pose_x"   />
-    <arg name="goal_pose_y"  />
-    <arg name="goal_pose_z"   />
-    <arg name="/path_topic"   />
-    <arg name="/pose_stamped_topic"   />
-    <node name = "$(arg node_name)" pkg = "orca_room" type = "pub_sub" output = "screen">
-     <param name="target_model_name" type="string" value="$(arg target_model_name)" />
-     <param name="target_model/twist_linear_x" type="double" value="0.6" />
-     <param name="target_model/twist_angular_z" type="double" value="0.5" />
-     <param name="neighbor_distance" type="double" value="2.0" />
-     <param name="time_horizon" type="double" value="4.0" />
-     <param name="radius_" type="double" value="0.6" />  
-     <param name="goal_pose_x" type="double" value="$(arg goal_pose_x)" />
-     <param name="goal_pose_y" type="double" value="$(arg goal_pose_y)" />
-     <!-- <param name="goal_pose_z" type="double" value="$(arg goal_pose_z)" /> -->
-     <param name="time" type="double" value="0.1" />
-     <param name="max_speed" type="double" value="3.0" />
-     <remap from="/pose_stamped_topic" to="$(arg /pose_stamped_topic)" />
-     <remap from="/path_topic" to="$(arg /path_topic)" />
-    </node>
-
-</launch>
-
-<!-- <launch>
 
 <node name = "pub_sub" pkg = "orca_room" type = "pub_sub" output = "screen">
 <param name="target_model_name" type="string" value="model2.1" />
-<param name="target_model/twist_linear_x" type="double" value="1.3" />
+<param name="target_model/twist_linear_x" type="double" value="0.8" />
 <param name="target_model/twist_angular_z" type="double" value="1.0" />
 <param name="max_speed" type="double" value="3.0" />
 <param name="neighbor_distance" type="double" value="2.0" />
@@ -49,7 +22,7 @@
 <param name="max_speed" type="double" value="3.0" />
 <param name="neighbor_distance" type="double" value="4.0" />
 <param name="time_horizon" type="double" value="2.0" />
-<param name="radius_" type="double" value="0.7" />
+<param name="radius_" type="double" value="0.56" />
 <param name="goal_pose_x" type="double" value="10.0" />
 <param name="goal_pose_y" type="double" value="1.7" />
 <param name="goal_pose_z" type="double" value="0.5" />
@@ -59,12 +32,12 @@
 </node>
 <node name = "pub_sub3" pkg = "orca_room" type = "pub_sub" output = "screen">
 <param name="target_model_name" type="string" value="model2.3" />
-<param name="target_model/twist_linear_x" type="double" value="1.1" />
+<param name="target_model/twist_linear_x" type="double" value="1.0" />
 <param name="target_model/twist_angular_z" type="double" value="1.0" />
 <param name="max_speed" type="double" value="3.0" />
 <param name="neighbor_distance" type="double" value="4.0" />
 <param name="time_horizon" type="double" value="2.0" />
-<param name="radius_" type="double" value="0.6" />
+<param name="radius_" type="double" value="0.7" />
 <param name="goal_pose_x" type="double" value="4.3" />
 <param name="goal_pose_y" type="double" value="9.5" />
 <param name="goal_pose_z" type="double" value="0.5" />
@@ -75,12 +48,12 @@
 </node>
 <node name = "pub_sub4" pkg = "orca_room" type = "pub_sub" output = "screen">
 <param name="target_model_name" type="string" value="model2.4" />
-<param name="target_model/twist_linear_x" type="double" value="1.0" />
+<param name="target_model/twist_linear_x" type="double" value="0.7" />
 <param name="target_model/twist_angular_z" type="double" value="1.0" />
 <param name="max_speed" type="double" value="3.0" />
 <param name="neighbor_distance" type="double" value="4.0" />
 <param name="time_horizon" type="double" value="2.0" />
-<param name="radius_" type="double" value="0.6" />
+<param name="radius_" type="double" value="0.67" />
 <param name="goal_pose_x" type="double" value="9" />
 <param name="goal_pose_y" type="double" value="7.5" />
 <param name="goal_pose_z" type="double" value="0.5" />
@@ -92,7 +65,7 @@
 <node name = "pub_sub5" pkg = "orca_room" type = "pub_sub" output = "screen">
 <param name="target_model_name" type="string" value="model2.5" />
 <param name="target_model/twist_linear_x" type="double" value="1.0" />
-<param name="target_model/twist_angular_z" type="double" value="0.6" />
+<param name="target_model/twist_angular_z" type="double" value="0.8" />
 <param name="max_speed" type="double" value="3.0" />
 <param name="neighbor_distance" type="double" value="4.0" />
 <param name="time_horizon" type="double" value="2.0" />
@@ -100,7 +73,7 @@
 <param name="goal_pose_x" type="double" value="-0.0" />
 <param name="goal_pose_y" type="double" value="10.0" />
 <param name="goal_pose_z" type="double" value="0.5" />
-<param name="time" type="double" value="0.13" />
+<param name="time" type="double" value="0.1" />
 <remap from="/pose_stamped_topic" to="/pose_stamped_topic5" />
 <remap from="/path_topic" to="/path_topic5" />
 
@@ -123,28 +96,28 @@
 </node>
 <node name = "pub_sub7" pkg = "orca_room" type = "pub_sub" output = "screen">
 <param name="target_model_name" type="string" value="model2.7" />
-<param name="target_model/twist_linear_x" type="double" value="1.2" />
+<param name="target_model/twist_linear_x" type="double" value="1.0" />
 <param name="target_model/twist_angular_z" type="double" value="1.0" />
 <param name="max_speed" type="double" value="3.0" />
 <param name="neighbor_distance" type="double" value="4.0" />
 <param name="time_horizon" type="double" value="2.0" />
-<param name="radius_" type="double" value="0.6" />
+<param name="radius_" type="double" value="0.56" />
 <param name="goal_pose_x" type="double" value="-9.30" />
 <param name="goal_pose_y" type="double" value="2.6" />
 <param name="goal_pose_z" type="double" value="0.5" />
-<param name="time" type="double" value="0.13" />
+<param name="time" type="double" value="0.1" />
 <remap from="/pose_stamped_topic" to="/pose_stamped_topic7" />
 <remap from="/path_topic" to="/path_topic7" />
 
 </node>
 <node name = "pub_sub8" pkg = "orca_room" type = "pub_sub" output = "screen">
 <param name="target_model_name" type="string" value="model2.8" />
-<param name="target_model/twist_linear_x" type="double" value="0.5" />
+<param name="target_model/twist_linear_x" type="double" value="0.8" />
 <param name="target_model/twist_angular_z" type="double" value="1.0" />
 <param name="max_speed" type="double" value="3.0" />
 <param name="neighbor_distance" type="double" value="4.0" />
 <param name="time_horizon" type="double" value="2.0" />
-<param name="radius_" type="double" value="0.6" />
+<param name="radius_" type="double" value="0.7" />
 <param name="goal_pose_x" type="double" value="-8.7" />
 <param name="goal_pose_y" type="double" value="-5.0" />
 <param name="goal_pose_z" type="double" value="0.5" />
@@ -155,16 +128,16 @@
 </node>
 <node name = "pub_sub9" pkg = "orca_room" type = "pub_sub" output = "screen">
 <param name="target_model_name" type="string" value="model2.9" />
-<param name="target_model/twist_linear_x" type="double" value="1.0" />
-<param name="target_model/twist_angular_z" type="double" value="1.2" />
+<param name="target_model/twist_linear_x" type="double" value="0.7" />
+<param name="target_model/twist_angular_z" type="double" value="1.0" />
 <param name="max_speed" type="double" value="3.0" />
 <param name="neighbor_distance" type="double" value="4.0" />
 <param name="time_horizon" type="double" value="2.0" />
-<param name="radius_" type="double" value="0.5" />
+<param name="radius_" type="double" value="0.7" />
 <param name="goal_pose_x" type="double" value="-3.3" />
 <param name="goal_pose_y" type="double" value="-10.0" />
 <param name="goal_pose_z" type="double" value="0.5" />
-<param name="time" type="double" value="0.15" />
+<param name="time" type="double" value="0.2" />
 <remap from="/pose_stamped_topic" to="/pose_stamped_topic9" />
 <remap from="/path_topic" to="/path_topic9" />
 
@@ -172,7 +145,7 @@
 <node name = "pub_sub10" pkg = "orca_room" type = "pub_sub" output = "screen">
 <param name="target_model_name" type="string" value="model2.10" />
 <param name="target_model/twist_linear_x" type="double" value="1.0" />
-<param name="target_model/twist_angular_z" type="double" value="0.2" />
+<param name="target_model/twist_angular_z" type="double" value="0.5" />
 <param name="max_speed" type="double" value="3.0" />
 <param name="neighbor_distance" type="double" value="4.0" />
 <param name="time_horizon" type="double" value="2.0" />
@@ -180,9 +153,9 @@
 <param name="goal_pose_x" type="double" value="3.5" />
 <param name="goal_pose_y" type="double" value="-9.0" />
 <param name="goal_pose_z" type="double" value="0.5" />
-<param name="time" type="double" value="0.15" />
+<param name="time" type="double" value="0.1" />
 <remap from="/pose_stamped_topic" to="/pose_stamped_topic10" />
 <remap from="/path_topic" to="/path_topic10" />
 
 </node>
-</launch> -->
+</launch>

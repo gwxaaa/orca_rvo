@@ -225,6 +225,7 @@ namespace RVO
     {
       const RVO::Obstacle *obstacle1 = obstacleNeighbors_[i];
       const Obstacle *obstacle2 = obstacle1->next_;
+      //如果相等，在这里为什么没有实现避障
       const Vector2 relativePosition1 = obstacle1->point_ - position_;
       const Vector2 relativePosition2 = obstacle2->point_ - position_;
 //区分障碍物这里没有设置。
@@ -494,6 +495,7 @@ namespace RVO
       const Vector2 relativeVelocity = velocity_ - other->velocity_;
       const float distSq = absSq(relativePosition);
       const float combinedRadius = radius_ + other->radius_;
+            std::cout << " combinedRadius  :" <<  combinedRadius  << std::endl;
       const float combinedRadiusSq = combinedRadius * combinedRadius;
       Line line;
       Vector2 u;

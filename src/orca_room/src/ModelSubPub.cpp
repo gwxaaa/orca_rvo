@@ -79,6 +79,8 @@ namespace RVO
                      neighborDistance_, timeHorizon_, other_models_states, radius_);
     Vector2 newVelocity = agent.computeNewVelocity(agentPosition, agentVelocity,
                                                    goalPosition, agentNeighbors_, obstacleNeighbors_, time);
+
+                                      
     if (std::isnan(newVelocity.x()) || std::isnan(newVelocity.y()))
     {
       new_pose.position.x = agentPosition.x();
@@ -99,21 +101,27 @@ namespace RVO
       double X = newVelocity.x();
       double Y = newVelocity.y();
       new_twist.linear.x = sqrt(X * X + Y * Y);
+      std::cout << "new_twist.linear.x  :" << new_twist.linear.x << std::endl;
       double theta = atan2(Y, X);
       new_twist.angular.x = 0;
       new_twist.angular.y = 0;
       double angle_diff = theta - initialtheta2;
       std::cout << "gle_diff.z :" << angle_diff << std::endl;
-      // 这里要保证角速度的大小方向，
-      angle_diff = std::remainder(angle_diff, 2.0 * M_PI);
-      std::cout << "angle_diff.z :" << angle_diff << std::endl;
+      // // 这里要保证角速度的大小方向，
+      // angle_diff = std::remainder(angle_diff, 2.0 * M_PI);
+      // std::cout << "angle_diff.z :" << angle_diff << std::endl;
       new_twist.angular.z = angle_diff / time;
       std::cout << "new_twist.angular.z :" << new_twist.angular.z << std::endl;
-      // new_pose.position.x = agentPosition.x() + newVelocity.x() * time;
-      // new_pose.position.y = agentPosition.y() + newVelocity.y() * time;
-      KinematicModel kinematic_model(agentpose, new_twist);
-      new_pose = kinematic_model.calculateNewPosition(time);
+      new_pose.position.x = agentPosition.x() + newVelocity.x() * time;
+      new_pose.position.y = agentPosition.y() + newVelocity.y() * time;
+      // KinematicModel kinematic_model(agentpose, new_twist);
+      // new_pose = kinematic_model.calculateNewPosition(time);
     }
+
+
+
+
+
     gazebo_msgs::ModelState model_state;
     model_state.model_name = agentname;
     model_state.pose = new_pose;

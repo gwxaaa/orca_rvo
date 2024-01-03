@@ -21,6 +21,7 @@ namespace RVO
         // 获取计算后的邻居信息
         std::vector<Agent *> getAgentNeighbors() const;
         std::vector<Obstacle *> getObstacleNeighbors() const;
+
     private:
         const ModelSubPub &modelSubPub_;
         // 代理和障碍物的向量
@@ -31,6 +32,10 @@ namespace RVO
         std::vector<gazebo_msgs::ModelState> other_models_states;
         bool isAgent(const gazebo_msgs::ModelState &model_state);
         bool isObstacle(const gazebo_msgs::ModelState &model_state);
+        Neighbor *next_;
+        bool isConvex_;
+        Obstacle *newObstacle;
+        bool modelNameContainsString(const std::string &model_name, const std::string &search_string);
     };
 
 } // namespace RVO
